@@ -1,13 +1,13 @@
 FROM debian:buster
 
-ENV AUTOINDEX on
+#ENV AUTOINDEX on
 
-RUN apt update && apt-get upgrade -y && apt-get -y install wget \
-	nginx \
+RUN apt update && apt-get upgrade -y && apt-get -y install wget && \
+	apt-get -y install nginx \
 	mariadb-server \
 	php7.3 php-mysql php-fpm php-pdo php-gd php-cli php-mbstring
 
-COPY ./srcs/nginx.conf /etc/nginx/sites-available/wordpress
+COPY ./srcs/nginx.conf /etc/nginx/sites-available/default
 
 WORKDIR /var/www/html/
 
@@ -22,15 +22,17 @@ COPY ./srcs/config.inc.php /var/www/html/phpmyadmin
 RUN wget https://wordpress.org/latest.tar.gz && \
 	tar -xvzf latest.tar.gz && rm -rf latest.tar.gz
 
-COPY ./srcs/wp-config.php /var/www/html/wordpress
+COPY ./srcs/wp-config.php /var/www/html/
+
+# RUN chmod 440 wp-config.php
 
 RUN openssl req -x509 -nodes -days 365 -subj "/C=IT/ST=Italy/L=Rome/O=Center/OU=42rome/CN=forhjy" -newkey rsa:2048 -keyout /etc/ssl/nginx-selfsigned.key -out /etc/ssl/nginx-selfsigned.crt;
 
 EXPOSE 80 443
 
-#RUN chown -R www-data:www-data *
+RUN chown -R www-data:www-data *
 
-#RUN chmod -R 755 /var/www/*
+RUN chmod -R 755 /var/www/*
 
 WORKDIR /./
 
