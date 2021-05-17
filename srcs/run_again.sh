@@ -1,9 +1,1 @@
-echo Per favore inserisci Image ID
-read img
-if docker run --rm --env AUTOINDEX=off -p 8080:443 $img
-then
-	clear
-	exit
-fi
-	echo Immagine non valida, ritenta.
-	./run_again.sh
+docker run --rm --env AUTOINDEX=off -p 80:80 -p 443:443 -it ft_server

@@ -1,6 +1,6 @@
 FROM debian:buster
 
-#ENV AUTOINDEX on
+ENV AUTOINDEX on
 
 RUN apt update && apt-get upgrade -y && apt-get -y install wget && \
 	apt-get -y install nginx \
@@ -35,6 +35,8 @@ RUN chown -R www-data:www-data *
 RUN chmod -R 755 /var/www/*
 
 WORKDIR /./
+
+#COPY ./srcs/run_again.sh ./
 
 COPY ./srcs/init.sh ./
 
